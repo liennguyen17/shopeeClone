@@ -34,6 +34,7 @@ export default function Login() {
                   type='password'
                   name='password'
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+                  autoComplete='on'
                   placeholder='Password'
                 />
 

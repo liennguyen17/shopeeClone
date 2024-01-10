@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { rules } from 'src/utils/rules'
+import { getRules } from 'src/utils/rules'
 
 interface FormData {
   email: string
@@ -12,13 +12,25 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    watch,
+    getValues,
     formState: { errors }
   } = useForm<FormData>()
-
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
-  })
+  const rules = getRules(getValues) //truyen gia tri thi moi validate dc confim_password tu rules
+  const onSubmit = handleSubmit(
+    (data) => {
+      // console.log(data)
+    },
+    (data) => {
+      const password = getValues('password')
+      console.log(password)
+    }
+  )
   console.log('error', errors)
+
+  const email = watch('email')
+  console.log(email)
+
   return (
     <div className='bg-orange'>
       <div className='max-w-7xl mx-auto px-4'>
@@ -41,6 +53,7 @@ export default function Register() {
                 <input
                   type='password'
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+                  autoComplete='on'
                   placeholder='Password'
                   {...register('password', rules.password)}
                 />
@@ -51,8 +64,12 @@ export default function Register() {
                 <input
                   type='password'
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+                  autoComplete='on'
                   placeholder='Confirm Password'
-                  {...register('confirm_password', rules.confirm_password)}
+                  {...register('confirm_password', {
+                    ...rules.confirm_password
+                    // validate: (value) => value === getValues('password') || 'Nhập lại password không khớp'
+                  })}
                 />
 
                 <div className='mt-1 text-red-600 min-h-[1.25rem] text-sm'>{errors.confirm_password?.message}</div>
