@@ -46,13 +46,13 @@ export default function Login() {
                   type='submit'
                   className='button w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600'
                 >
-                  Đăng ký
+                  Đăng nhập
                 </button>
               </div>
               <div className=' mt-8 flex items-center justify-center'>
-                <span className='text-gray-400'>Bạn đã có tài khoản?</span>
+                <span className='text-gray-400'>Bạn chưa có tài khoản?</span>
                 <Link className='text-red-500 ml-1' to='/register'>
-                  Đăng nhập
+                  Đăng ký
                 </Link>
               </div>
             </form>

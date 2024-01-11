@@ -1,8 +1,11 @@
-import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import Input from 'src/components/Input'
-import { getRules, schema, Schema } from 'src/utils/rules'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { omit } from 'lodash'
+import { getRules, schema, Schema } from 'src/utils/rules'
+import Input from 'src/components/Input'
+import { registerAccount } from 'src/apis/auth.api'
 
 type FormData = Schema
 
@@ -11,21 +14,23 @@ export default function Register() {
     register,
     handleSubmit,
     watch,
-    getValues,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   })
-  const rules = getRules(getValues) //truyen gia tri thi moi validate dc confim_password tu rules
-  const onSubmit = handleSubmit(
-    (data) => {
-      // console.log(data)
-    },
-    (data) => {
-      const password = getValues('password')
-      console.log(password)
-    }
-  )
+
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+  })
+
+  const onSubmit = handleSubmit((data) => {
+    const body = omit(data, ['confirm_password'])
+    registerAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data)
+      }
+    })
+  })
   console.log('error', errors)
 
   const email = watch('email')
