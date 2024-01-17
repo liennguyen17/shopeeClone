@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from 'src/apis/auth.api'
+import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import { AppContext } from 'src/contexts/app.context'
 import { ErrorResponse } from 'src/types/utils.type'
@@ -78,14 +79,16 @@ export default function Login() {
               />
               <div className='mt-3'>
                 {/* khi tao form ma ko dien type trong button thi cho nhu ty no la submit*/}
-                <button
+                <Button
                   type='submit'
-                  className='button w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600'
+                  className='w-full py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center '
+                  isLoading={loginMutation.isLoading}
+                  disabled={loginMutation.isLoading}
                 >
                   Đăng nhập
-                </button>
+                </Button>
               </div>
-              <div className=' mt-8 flex items-center justify-center'>
+              <div className=' mt-8 flex items-center justify-center '>
                 <span className='text-gray-400'>Bạn chưa có tài khoản?</span>
                 <Link className='text-red-500 ml-1' to='/register'>
                   Đăng ký
