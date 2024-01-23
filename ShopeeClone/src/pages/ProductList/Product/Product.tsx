@@ -1,29 +1,33 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Product as ProductType } from 'src/types/product.type'
+import { formatCurrency, formatNumberToSocialStyle } from 'src/utils/utils'
 
-export default function Product() {
+interface Props {
+  product: ProductType
+}
+
+export default function Product({ product }: Props) {
   return (
     <Link to='/'>
       <div className='bg-white shadow rounded-sm hover:translate-y-[-0.04rem] hover:shadow-md duration-100 transition-transform overflow-hidden'>
         <div className='w-full pt-[100%] relative'>
           <img
-            src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lq1pm073fmxec4_tn'
-            alt=''
+            src={product.image}
+            alt={product.name}
             className='absolute top-0 left-0 bg-white w-full h-full object-cover'
           />
         </div>
         <div className='p-2 overflow-hidden'>
-          <div className='min-h-[2rem] line-clamp-2 text-xs'>
-            Tai Nghe True Wireless OPPO Enco Air 2 Pro | Hiệu Ứng Âm Thanh Enco Live - Bán kèm Phone
-          </div>
+          <div className='min-h-[2rem] line-clamp-2 text-xs'>{product.name}</div>
           <div className='flex items-center mt-3'>
-            <div className='line-throungh max-w-[50%] text-gray-500 truncate'>
+            <div className='line-through max-w-[50%] text-gray-500 truncate'>
               <span className='text-xs'>₫</span>
-              <span>1.990.000</span>
+              <span>{formatCurrency(product.price_before_discount)}</span>
             </div>
             <div className='text-orange truncate ml-1'>
               <span className='text-xs'>₫</span>
-              <span>1.290.000</span>
+              <span>{formatCurrency(product.price)}</span>
             </div>
           </div>
           <div className='mt-3 flex items-center justify-end'>
@@ -62,7 +66,7 @@ export default function Product() {
               </div>
               <div className='ml-2 text-sm'>
                 <span>Đã bán</span>
-                <span className='ml-1'>23.5k</span>
+                <span className='ml-1'>{formatNumberToSocialStyle(product.sold)}</span>
               </div>
             </div>
           </div>

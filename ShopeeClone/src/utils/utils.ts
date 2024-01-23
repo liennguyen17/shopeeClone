@@ -9,3 +9,16 @@ export function isAxiosUnprocessableEntityError<FormError>(error: unknown): erro
 }
 
 // khi ko import dc tuwf axios thì mình tạo 1 constans để tạo cho hàm HttpStatusCode từ constants -> httpStatusCode.enum.ts => và import từ file này vào
+export function formatCurrency(currency: number) {
+  return new Intl.NumberFormat('de-DE').format(currency)
+}
+
+export function formatNumberToSocialStyle(value: number) {
+  return new Intl.NumberFormat('en', {
+    notation: 'compact',
+    maximumFractionDigits: 1
+  })
+    .format(value)
+    .replace('.', ',')
+    .toLowerCase()
+}
