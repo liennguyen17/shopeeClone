@@ -22,3 +22,9 @@ export function formatNumberToSocialStyle(value: number) {
     .replace('.', ',')
     .toLowerCase()
 }
+
+// cú pháp `-?` sẽ loại bỏ undefined của key optional (?:)
+export type NoUndefinedField<T> = {
+  [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
+  //NonNullable: utils của typescript loại bỏ đi giá trị undefined của 1 type
+}

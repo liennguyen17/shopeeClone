@@ -3,6 +3,15 @@ import * as yup from 'yup'
 
 type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions }
 
+function testPricMinMax(this: yup.TestContext<yup.AnyObject>) {
+  const { price_max, price_min } = this.parent as { price_min: string; price_max: string }
+  if (price_min !== '' && price_max !== '') {
+    //(1)
+    return Number(price_max) >= Number(price_min) //(1)
+  }
+  return price_min !== '' || price_max !== ''
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   email: {
@@ -74,7 +83,19 @@ export const schema = yup.object({
     .required('Nhập lại password là bắt buộc')
     .min(6, 'Độ dài từ 6-160 ký tự')
     .max(160, 'Độ dài từ 6-160 ký tự')
-    .oneOf([yup.ref('password')], 'Nhập lại password không khớp')
+    .oneOf([yup.ref('password')], 'Nhập lại password không khớp'),
+  //khi cta return ve true torn function test nay thì có nghĩa là nó đã past qua được vượt qua dc bài test nó ko có bị lỗi , còn nêú cta return false trong này thì nó ko có past qua được nó bị lỗi
+  // ví dụ giá min, max đều có và max < min thì trong dk(1) sẽ return false => ko vượt qua bài test => xuất hiện lỗi giá ko phù hợp trong price_min
+  price_min: yup.string().test({
+    name: 'price-not-allowed',
+    message: 'Giá không phù hợp',
+    test: testPricMinMax
+  }),
+  price_max: yup.string().test({
+    name: 'price-not-allowed',
+    message: 'Giá không phù hợp',
+    test: testPricMinMax
+  })
 })
 
 // const loginSchema = schema.omit(['confirm_password']) //lay tat ca tru ptu trong omit
