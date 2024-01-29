@@ -28,3 +28,5 @@ export type NoUndefinedField<T> = {
   [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
   //NonNullable: utils của typescript loại bỏ đi giá trị undefined của 1 type
 }
+
+export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'
